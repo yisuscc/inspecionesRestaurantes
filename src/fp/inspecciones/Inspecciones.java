@@ -1,7 +1,10 @@
 package fp.inspecciones;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,5 +54,9 @@ public class Inspecciones {
 	public String toString() {
 		return "Inspecciones [inspecciones=" + inspecciones + "]";
 	}
-	 
+	public Map<String,String> obtenerDescripcionInspeccionMayorPuntuacion() {
+		Function<String, String> descMAsValorada = nombre -> inspecciones.stream().filter(inspeccion -> inspeccion.getNombre().equals(nombre)).max(Comparator.comparing(Inspeccion::getScore)).get().getDescripcion();
+		Map<String, String> diccionarioMaximos = inspecciones.stream().collect(Collectors.toMap(Inspeccion::getNombre,inspeccion-> descMAsValorada.apply(inspeccion.getNombre())));
+		return diccionarioMaximos;
+	}
 }
